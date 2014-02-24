@@ -6,15 +6,16 @@ f.close()
 conn=sqlite3.connect("/home/ank/prayaas/prayaas.db")
 c=conn.cursor()
 start_time=time.time()
-l=[]
+write_list=[]
 count=0
 
-c.execute('''CREATE TABLE tab_1
-             (userId TEXT, 
+c.execute('''CREATE TABLE user_info
+             (id INT PRIMARY KEY,
+             userId TEXT, 
              userType TEXT,
              age INT,
              gender TEXT,
-             geocountry INT)''')
+             geocountry TEXT)''')
 
 
 with open("/home/ank/prayaas/contestdata_0.txt") as myfile:
@@ -26,12 +27,12 @@ with open("/home/ank/prayaas/contestdata_0.txt") as myfile:
         data=tuple(data_list[0:5]) #writing information of the user for inserting in table1
         write_list.append(data)
 
-        if len(l) == 1000000 :
-            c.executemany('INSERT INTO tab_1 VALUES (?,?,?,?,?)', write_list)
+        if len(write_list) == 1000000 :
+            c.executemany('INSERT INTO user_info (userId,userType,age,gender,geocountry) VALUES (?,?,?,?,?)', write_list)
             conn.commit()
             count+=1;
             print count
-            l=[]
+            write_list=[]
 
 conn.commit()
 conn.close()
