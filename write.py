@@ -3,6 +3,7 @@
 import os
 import sqlite3
 import time
+import csv
 
 rootdir = os.path.dirname(os.path.abspath(__file__))
 
@@ -12,6 +13,7 @@ f.close()
 
 conn= sqlite3.connect(os.path.join(rootdir,'prayaas.db'))
 c = conn.cursor()
+conn.text_factory = str
 start_time = time.time()
 user_info_list = []
 domain_data_list = []
@@ -31,22 +33,34 @@ c.execute('''CREATE TABLE user_info
             )''')#creating table for the userinfo
 
 c.execute('''CREATE TABLE queries
-            (id INT,
+            (q_id INT,
             query_string TEXT,
             count INT,
-            FOREIGN KEY(id) REFERENCES user_info(id) 
+            FOREIGN KEY(q_id) REFERENCES user_info(rowid) 
             )''')
 #foreign key references at the last and best way for addind m2m rel is creating a seperate mapping table
 
 c.execute('''CREATE TABLE domains
-            (id INT,
+            (d_id INT,
             domain_code TEXT,
             count INT,
-            FOREIGN KEY(id) REFERENCES user_info(id)
+            FOREIGN KEY(d_id) REFERENCES user_info(rowid)
             )''')
 
+c.execute('''CREATE TABLE domain_mapper
+            (domain_code TEXT,
+            domain_name TEXT
+            )''')
 
-with open(os.path.join(rootdir,"contestdata_0.txt") as myfile:
+with open(os.path.join(rootdir, 'DomainMapping.csv'), 'rb') as fin: 
+    # csv.DictReader uses first line in file for column headings by default
+    dr = csv.DictReader(fin) # comma is default delimiter
+    to_db= [ ( str(i['\xef\xbb\xbfDomainId']), str(i['Name']) ) for i in dr]#getting the csv values from the dictionary object 
+    c.executemany("INSERT INTO domain_mapper (domain_code, domain_name) VALUES (?, ?)", to_db )
+    conn.commit()
+
+
+with open(os.path.join(rootdir,"contestdata_0.txt")) as myfile:
 
     for line in myfile:
 

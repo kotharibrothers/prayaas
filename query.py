@@ -2,23 +2,21 @@
 
 import os
 import sqlite3
-import time
 
 rootdir = os.path.dirname(os.path.abspath(__file__))
 
-start_time = time.clock()
 
-conn = sqlite3.connect(os.path.join(rootdir, 'prayaas.db'))
-c = conn.cursor()
+def connection(db_name):
+	global c
+	conn=sqlite3.connect(db_name)
+	c=conn.cursor()
 
-with c:
-	cur.execute('''SELECT * FROM user_info WHERE (userID = ?) OR 
-		(userType = ? AND age = ? AND gender = ? AND geocountry AND msntime = ? AND msnvisits = ?), () ''')        
-    con.commit()
+def user_query(column,userType,age="*",gender="*",geocountry="*",msntime="*",msnvisits="*"):
+    for row in c.execute('''select {0} from user_info where userType={1} and age={2} and gender={3} and 
+    	geocountry={4} and msntime={5} and msnvisits={6}'''.format(column,userType,age,gender,geocountry,msntime,msnvisits)):
+        print row
 
 
-conn.close()
-
-elapsed_time = time.clock() - start_time
-print "Time elapsed: {} seconds".format(elapsed_time)
-print "Read {} lines".format(lines)
+def query_str(*userid):
+	for  row in c.execute("select  query_string from queries where q_id in  {0} ". format(tuple(userid))):
+		print row
