@@ -5,6 +5,9 @@ Prayaas, Technex'14, Indian Institute of Technology(BHU), Varanasi
 
 SQLite3 was chosen because of its high scalability(high volume size upto 140TB!), lowest querying times, platform independence, compact size and zero config headaches :)
 
+The benchmarks for SQLite3 can be seen here:
+
+[Imgur](http://i.imgur.com/gPCCdLF.png)
 
 Setup
 ----------
@@ -22,5 +25,6 @@ Usage
 Contributors
 ----------
 
-@delta24 (Viyat Bhalodia)
-@black_perl (Ankush Sharma)
+[https://github.com/delta24](Viyat Bhalodia)
+
+[https://github.com/black_perl](Ankush Sharma)
