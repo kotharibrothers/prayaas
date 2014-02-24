@@ -10,40 +10,94 @@ rootdir = os.path.dirname(os.path.abspath(__file__))
 f=open(os.path.join(rootdir,'prayaas.db'),"wb")
 f.close()
 
-conn=sqlite3.connect(os.path.join(rootdir,'prayaas.db'))
-c=conn.cursor()
-start_time=time.time()
-write_list=[]
-count=0
+conn= sqlite3.connect(os.path.join(rootdir,'prayaas.db'))
+c = conn.cursor()
+start_time = time.time()
+user_info_list = []
+domain_data_list = []
+user_id = 1
+queries_data_list=[]
+count=1
 
 c.execute('''CREATE TABLE user_info
-             (id INT PRIMARY KEY,
-             userId TEXT, 
-             userType TEXT,
-             age INT,
-             gender TEXT,
-             geocountry TEXT)''')
+            (id INT PRIMARY KEY,
+            userId TEXT, 
+            userType TEXT,
+            age INT,
+            gender TEXT,
+            geocountry TEXT,
+            msntime INT,
+            msnvisits INT
+            )''')#creating table for the userinfo
 
-with open("/home/ank/prayaas/contestdata_0.txt") as myfile:
+c.execute('''CREATE TABLE queries
+            (id INT,
+            query_string TEXT,
+            count INT,
+            FOREIGN KEY(id) REFERENCES user_info(id) 
+            )''')
+#foreign key references at the last and best way for addind m2m rel is creating a seperate mapping table
+
+c.execute('''CREATE TABLE domains
+            (id INT,
+            domain_code TEXT,
+            count INT,
+            FOREIGN KEY(id) REFERENCES user_info(id)
+            )''')
+
+
+with open(os.path.join(rootdir,"contestdata_0.txt") as myfile:
 
     for line in myfile:
 
-        line=line.strip()
-        data_list=line.split("\t")
-        data=tuple(data_list[0:5]) #writing information of the user for inserting in table1
-        write_list.append(data)
+        line = line.strip()
+        data_list = line.split("\t")
+        
+        user_info_data = tuple(data_list[0:5]+data_list[7:]) #writing information of the user for inserting in table1
+        user_info_list.append(user_info_data)
+       
+        if data_list[5] != "" :
+            domain_data = data_list[5].split("|")
+            for m in domain_data:
+                domain_data_list.append((user_id,m.split(";")[0],m.split(";")[1]))
 
-        if len(write_list) == 1000000 :
-            c.executemany('INSERT INTO user_info (userId,userType,age,gender,geocountry) VALUES (?,?,?,?,?)', write_list)
+        if data_list[6] != "" :
+            queries_data = data_list[6].split("|")
+            for m in queries_data:
+                queries_data_list.append((user_id,m.split(";")[0],m.split(";")[1]))
+
+
+        if len(user_info_list) == 1000000 :
+
+            c.executemany('INSERT INTO user_info (userId,userType,age,gender,geocountry,msntime,msnvisits) \
+            VALUES (?,?,?,?,?,?,?)',user_info_list)
             conn.commit()
-            count+=1;
+
+            c.executemany('INSERT INTO domains VALUES (?,?,?)', domain_data_list)
+            c.executemany('INSERT INTO queries VALUES (?,?,?)', queries_data_list)
+            conn.commit()
+           
             print count
-            write_list=[]
+            count+=1
+            user_info_list=[]
+            domain_data_list=[]
+            queries_data_list=[]
 
+        user_id+=1;
+
+
+#recording the remaining
+c.executemany('INSERT INTO user_info (userId,userType,age,gender,geocountry,msntime,msnvisits) \
+            VALUES (?,?,?,?,?,?,?)',user_info_list)
 conn.commit()
-conn.close()
 
-########Time Test#############
+c.executemany('INSERT INTO domains VALUES (?,?,?)', domain_data_list)
+c.executemany('INSERT INTO queries VALUES (?,?,?)', queries_data_list)
+conn.commit()            
+
+conn.close() #closing the connection
+
+#### Time ####
 end_time=time.time()
 elapsed=(end_time - start_time)
 print elapsed
