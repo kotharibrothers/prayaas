@@ -1,9 +1,16 @@
+#!/usr/bin/python2
+
+import os
 import sqlite3
 import time
 
-f=open("/home/ank/prayaas/prayaas.db","wb")
+rootdir = os.path.dirname(os.path.abspath(__file__))
+
+# Remove before submitting
+f=open(os.path.join(rootdir,'prayaas.db'),"wb")
 f.close()
-conn=sqlite3.connect("/home/ank/prayaas/prayaas.db")
+
+conn=sqlite3.connect(os.path.join(rootdir,'prayaas.db'))
 c=conn.cursor()
 start_time=time.time()
 write_list=[]
@@ -16,7 +23,6 @@ c.execute('''CREATE TABLE user_info
              age INT,
              gender TEXT,
              geocountry TEXT)''')
-
 
 with open("/home/ank/prayaas/contestdata_0.txt") as myfile:
 
@@ -36,6 +42,8 @@ with open("/home/ank/prayaas/contestdata_0.txt") as myfile:
 
 conn.commit()
 conn.close()
+
+########Time Test#############
 end_time=time.time()
 elapsed=(end_time - start_time)
 print elapsed
