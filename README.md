@@ -38,11 +38,13 @@ chmod +x install.sh
 ```
 
 After that a prayaas.db file is created.
+Do the following:
+
 ```
 python write.py #for setting up the sqlite3 database
 
 ```
-The above scrip will  load up the database required for querying and  will display time of setup on exit.
+The above script will  load up the database required for querying and  will display time of setup on exit.
 It will also count on execution of every million of line in the text file.
 After that for querying use the following command in the current directory:
 ```
