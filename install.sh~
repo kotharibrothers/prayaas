@@ -15,6 +15,9 @@ if [ "$OPTION" == "$CORRECT" ]; then
 ### Make the .py file executable ###
 	chmod +x *.py
 
+	python2 write.py;
+	sqlite3 prayaas.db;
+
 else
 	exit;
 fi

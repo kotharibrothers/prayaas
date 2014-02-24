@@ -4,6 +4,7 @@ import os
 import sqlite3
 import time
 import csv
+import sys
 
 rootdir = os.path.dirname(os.path.abspath(__file__))
 
@@ -119,3 +120,5 @@ conn.close() #closing the connection
 end_time=time.time()
 elapsed=(end_time - start_time)
 print elapsed
+
+sys.exit(1)
