@@ -6,16 +6,16 @@ Prayaas, Technex'14, Indian Institute of Technology(BHU), Varanasi
 In this implementation, **Python** is used with **SQLite3** providing high-speed querying and efficient, robust read and write operations.
 
 SQLite3 was chosen because of 
-	- its high scalability(high volume size upto 140TB!), 
-	- lowest querying times, 
-	- cross-platform compatibility,
-	- compact size of the database
-	- inbuilt Python support
-	- and zero config headaches :)
+- its high scalability(high volume size upto 140TB!), 
+- lowest querying times, 
+- cross-platform compatibility,
+- compact size of the database
+- inbuilt Python support
+- and zero config headaches :)
 
 The benchmarks for SQLite3 can be seen here:
 
-[![BS Img]]
+[BS Img]
 
 More info on SQLite @ <http://sqlite.org>
 
@@ -42,14 +42,14 @@ Database Structure
 
 The event problem statement provided 4 raw, text files (each upto 1GB in size). The text files contained ***tab-delimited*** MSN user data in the form of:
 
-	- userID, 
-	- userType(Machine or Human), 
-	- age, 
-	- gender(Unknown, Male, Female), 
-	- country, 
-	- domain seaches 
-	- and specific search keywords.
-	- domain names corresponding to index numbers given to them
+- userID, 
+- userType(Machine or Human), 
+- age, 
+- gender(Unknown, Male, Female), 
+- country, 
+- domain seaches 
+- and specific search keywords.
+- domain names corresponding to index numbers given to them
 
 Here separate tables were created for user_info, domain mapping and search queries. Each table contained a foreignkey related the specific data in relation to userID (aliased with ROWID of SQLite). 
 
@@ -86,7 +86,6 @@ Contributions
 
 Submit bug reports @ [GitHub Issue Tracker](https://github.com/delta24/prayaas/issues)
 
-Send a pull request! 
-
+Send us a pull request! 
 
 [BS Img]: http://i.imgur.com/gPCCdLF.png
