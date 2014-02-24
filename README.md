@@ -15,7 +15,7 @@ SQLite3 was chosen because of
 
 The benchmarks for SQLite3 can be seen here:
 
-[BS Img]
+![BS Img]
 
 More info on SQLite @ <http://sqlite.org>
 
