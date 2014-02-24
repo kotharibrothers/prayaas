@@ -1,10 +1,12 @@
 import sqlite3
 import time
+import csv
 
 f = open("/home/ank/prayaas/prayaas.db","wb")
 f.close()
 
 conn= sqlite3.connect("/home/ank/prayaas/prayaas.db")
+conn.text_factory=str
 c = conn.cursor()
 start_time = time.time()
 user_info_list = []
@@ -38,6 +40,19 @@ c.execute('''CREATE TABLE domains
             count INT,
             FOREIGN KEY(id) REFERENCES user_info(id)
             )''')
+
+c.execute('''CREATE TABLE domain_mapper
+            (domain_code TEXT,
+            domain_name TEXT
+            )''')
+
+with open('DomainMapping.csv','rb') as fin: 
+    # csv.DictReader uses first line in file for column headings by default
+    dr = csv.DictReader(fin) # comma is default delimiter
+    to_db= [ ( str(i['\xef\xbb\xbfDomainId']), str(i['Name']) ) for i in dr]#getting the csv values from the dictionary object 
+
+c.executemany("INSERT INTO domain_mapper (domain_code, domain_name) VALUES (?, ?)", to_db )
+conn.commit()
 
 
 
