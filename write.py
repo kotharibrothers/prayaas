@@ -4,6 +4,7 @@ import os
 import sqlite3
 import time
 import csv
+import sys
 
 rootdir = os.path.dirname(os.path.abspath(__file__))
 
@@ -11,6 +12,8 @@ rootdir = os.path.dirname(os.path.abspath(__file__))
 f=open(os.path.join(rootdir,'prayaas.db'),"wb")
 f.close()
 
+conn= sqlite3.connect("/home/ank/prayaas/prayaas.db")
+conn.text_factory=str
 conn= sqlite3.connect(os.path.join(rootdir,'prayaas.db'))
 c = conn.cursor()
 conn.text_factory = str
@@ -51,6 +54,8 @@ c.execute('''CREATE TABLE domain_mapper
             (domain_code TEXT,
             domain_name TEXT
             )''')
+
+
 
 with open(os.path.join(rootdir, 'DomainMapping.csv'), 'rb') as fin: 
     # csv.DictReader uses first line in file for column headings by default
@@ -115,3 +120,5 @@ conn.close() #closing the connection
 end_time=time.time()
 elapsed=(end_time - start_time)
 print elapsed
+
+sys.exit(1)

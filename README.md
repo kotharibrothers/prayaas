@@ -28,6 +28,8 @@ Version
 Setup
 ----------
 
+Put the domain-mapping.csv file and the raw text files containg data in the same directory before using.
+
 A install script is provided with this package. Open a terminal session and type:
 ```
 chmod +x install.sh
@@ -35,7 +37,21 @@ chmod +x install.sh
 
 ```
 
-Put the domain-mapping.csv file and the raw text files in the same directory before using
+After that a prayaas.db file is created.
+Do the following:
+
+```
+python write.py #for setting up the sqlite3 database
+
+```
+The above script will  load up the database required for querying and  will display time of setup on exit.
+It will also count on execution of every million of line in the text file.
+After that for querying use the following command in the current directory:
+```
+sqlite3 prayaas.db
+
+```
+A  sqlite3 prompt will appear and you can execute your raw sql queries.
 
 Database Structure
 ----------
