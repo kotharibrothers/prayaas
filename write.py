@@ -12,9 +12,8 @@ rootdir = os.path.dirname(os.path.abspath(__file__))
 f=open(os.path.join(rootdir,'prayaas.db'),"wb")
 f.close()
 
-conn= sqlite3.connect("/home/ank/prayaas/prayaas.db")
-conn.text_factory=str
 conn= sqlite3.connect(os.path.join(rootdir,'prayaas.db'))
+conn.text_factory=str
 c = conn.cursor()
 conn.text_factory = str
 start_time = time.time()
