@@ -77,7 +77,7 @@ Here are some of the sample queries you can do at the SQLite shell:
 ```
 $ sqlite> select rowid from user_info where (gender = 'M') and ( age between 25 and 35 ) and (msnvisits > 0) and (geocountry = 'US');
 
-$ sqlite> select query_string from queries where id in ( select rowid from user_info where (gender = 'M') and ( age between 25 and 35 ) and (msnvisits > 0) and (geocountry = 'US'));
+$ sqlite> select query_string from queries where q_id in ( select rowid from user_info where (gender = 'M') and ( age between 25 and 35 ) and (msnvisits > 0) and (geocountry = 'US'));
 
 ```
 
