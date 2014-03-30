@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Prayaas by delta24</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Prayaas</h1>
+        <p>Prayaas is the data-mining event for Technex&#39;14, Indian Institute of Technology(BHU), Varanasi</p>
+
+        <p class="view"><a href="https://github.com/delta24/prayaas">View the Project on GitHub <small>delta24/prayaas</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/delta24/prayaas/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/delta24/prayaas/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/delta24/prayaas">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>
+<a name="prayaas-technex14-indian-institute-of-technologybhu-varanasi" class="anchor" href="#prayaas-technex14-indian-institute-of-technologybhu-varanasi"><span class="octicon octicon-link"></span></a>Prayaas, Technex'14, Indian Institute of Technology(BHU), Varanasi</h2>
+
+<p><strong>Prayaas</strong> is an event based on building database systems that can scale and handle <em>big data</em> using efficient methods. </p>
+
+<p>In this implementation, <strong>Python</strong> is used with <strong>SQLite3</strong> providing high-speed querying and efficient, robust read and write operations.</p>
+
+<p>SQLite3 was chosen because of </p>
+
+<ul>
+<li>its high scalability(high volume size upto 140TB!), </li>
+<li>lowest querying times, </li>
+<li>cross-platform compatibility,</li>
+<li>compact size of the database</li>
+<li>inbuilt Python support</li>
+<li>and zero config headaches :)</li>
+</ul><p>The benchmarks for SQLite3 can be seen here:</p>
+
+<p><img src="http://i.imgur.com/gPCCdLF.png" alt="BS Img"></p>
+
+<p>More info on SQLite @ <a href="http://sqlite.org">http://sqlite.org</a></p>
+
+<h2>
+<a name="version" class="anchor" href="#version"><span class="octicon octicon-link"></span></a>Version</h2>
+
+<p>0.1</p>
+
+<h2>
+<a name="setup" class="anchor" href="#setup"><span class="octicon octicon-link"></span></a>Setup</h2>
+
+<p>Put the domain-mapping.csv file and the raw text files containg data in the same directory before using.</p>
+
+<p>A install script is provided with this package. Open a terminal session and type:</p>
+
+<pre><code>chmod +x install.sh
+./install.sh
+
+</code></pre>
+
+<p>After that a prayaas.db file is created.
+Do the following:</p>
+
+<pre><code>python write.py #for setting up the sqlite3 database
+
+</code></pre>
+
+<p>The above script will  load up the database required for querying and  will display time of setup on exit.
+It will also count on execution of every million of line in the text file.
+After that for querying use the following command in the current directory:</p>
+
+<pre><code>sqlite3 prayaas.db
+
+</code></pre>
+
+<p>A  sqlite3 prompt will appear and you can execute your raw sql queries.</p>
+
+<h2>
+<a name="database-structure" class="anchor" href="#database-structure"><span class="octicon octicon-link"></span></a>Database Structure</h2>
+
+<p>The event problem statement provided 4 raw, text files (each upto 1GB in size). The text files contained <strong><em>tab-delimited</em></strong> MSN user data in the form of:</p>
+
+<ul>
+<li>userID, </li>
+<li>userType(Machine or Human), </li>
+<li>age, </li>
+<li>gender(Unknown, Male, Female), </li>
+<li>country, </li>
+<li>domain seaches </li>
+<li>and specific search keywords.</li>
+<li>domain names corresponding to index numbers given to them</li>
+</ul><p>Here separate tables were created for user_info, domain mapping and search queries. Each table contained a foreignkey related the specific data in relation to userID (aliased with ROWID of SQLite). </p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Here are some of the sample queries you can do at the SQLite shell:</p>
+
+<pre><code>$ sqlite&gt; select rowid from user_info where (gender = 'M') and ( age between 25 and 35 ) and (msnvisits &gt; 0) and (geocountry = 'US');
+
+$ sqlite&gt; select query_string from queries where q_id in ( select rowid from user_info where (gender = 'M') and ( age between 25 and 35 ) and (msnvisits &gt; 0) and (geocountry = 'US'));
+
+</code></pre>
+
+<p>For simple queries, use the query module provided. </p>
+
+<h2>
+<a name="contributors" class="anchor" href="#contributors"><span class="octicon octicon-link"></span></a>Contributors</h2>
+
+<p><a href="https://github.com/delta24">Viyat Bhalodia</a></p>
+
+<p><a href="https://github.com/black_perl">Ankush Sharma</a></p>
+
+<h2>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h2>
+
+<p>Future versions will see the use of the <strong><em>pandas</em></strong> library for data analysis, efficient algorithms for data crunching, and support for <strong><em>regex</em></strong> matching and searching.</p>
+
+<h2>
+<a name="contributions" class="anchor" href="#contributions"><span class="octicon octicon-link"></span></a>Contributions</h2>
+
+<p>Submit bug reports @ <a href="https://github.com/delta24/prayaas/issues">GitHub Issue Tracker</a></p>
+
+<p>Send us a pull request! </p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/delta24">delta24</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-49529910-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
